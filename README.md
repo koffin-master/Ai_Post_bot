@@ -1,4 +1,5 @@
-# Ai_Post_bot
-This is a demo file , here Automated bot post and do changes
+# Ai Post Bot
 
-"Start-Here"
+## 🤖 Automated Update
+This README was updated automatically using the GitHub REST API
+and orchestrated with LangGraph.
