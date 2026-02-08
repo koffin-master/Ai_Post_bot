@@ -1,46 +1,56 @@
 # Ai_Post_bot
 
-Ai_Post_bot is an automated tool that uses the GitHub REST API to create and manage posts on GitHub repositories. It leverages LangGraph for orchestrating complex workflows and ensures reliable, repeatable automation.
+Ai_Post_bot is an automated bot that uses the GitHub REST API to create, update, and manage repository posts. The bot leverages **LangGraph** for orchestrating complex conversational flows and decision logic, enabling intelligent content handling and streamlined workflow automation.
 
 ---
 
 ## Table of Contents
-
 - [Overview](#overview)
-- [Features](#features)
+- [Key Features](#key-features)
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Configuration](#configuration)
-- [Contributing](#contributing)
+- [Usage](#usage)
 - [License](#license)
 
 ---
 
 ## Overview
+Ai_Post_bot automates interactions with GitHub repositories through the REST API. It can:
+- Create new issue or pull request posts.
+- Edit existing posts based on predefined triggers.
+- Delete or close posts when conditions are met.
+- Log actions and responses for audit purposes.
 
-Ai_Post_bot automates the creation of issues, pull requests, and comments on GitHub using the official REST API. Built with LangGraph, the bot can execute multi-step processes, handle retries, and maintain state across executions.
+LangGraph powers the decision-making engine, allowing the bot to adapt its behavior based on contextual information and user input.
 
 ---
 
-## Features
+## Key Features
+- **GitHub REST API Automation** – Direct integration with GitHub for full CRUD operations on posts.
+- **LangGraph Integration** – Structured workflow management and conversational logic.
+- **Configurable Triggers** – Set conditions for automated actions via a simple YAML file.
+- **Logging & Auditing** – Detailed logs of every API call and decision taken by the bot.
+- **Extensible Architecture** – Easily add new handlers or modify existing ones.
 
-- **GitHub REST API integration** – Create, update, and delete issues, pull requests, and comments.
-- **LangGraph workflow** – Declarative orchestration of tasks with built‑in retry and state management.
-- **Configurable triggers** – Run on a schedule, webhook, or manually.
-- **Secure authentication** – Uses GitHub Personal Access Tokens (PAT) with fine‑grained permissions.
+---
+
+## Prerequisites
+- Python 3.10 or newer
+- A GitHub personal access token with `repo` scope
+- `pip` package manager
 
 ---
 
 ## Installation
-
 ```bash
 # Clone the repository
 git clone https://github.com/your-username/Ai_Post_bot.git
 cd Ai_Post_bot
 
-# Create a virtual environment
-python -m venv .venv
-source .venv/bin/activate   # On Windows use `.venv\Scripts\activate`
+# Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate   # On Windows use: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -48,57 +58,36 @@ pip install -r requirements.txt
 
 ---
 
-## Usage
+## Configuration
+Create a `.env` file in the project root with the following content:
 
-```bash
-# Set the required environment variables
-export GITHUB_TOKEN="ghp_your_token_here"
-export REPO_OWNER="your-username"
-export REPO_NAME="your-repo"
-
-# Run the bot
-python main.py
+```
+GITHUB_TOKEN=your_github_token
+REPO_OWNER=repo_owner_username
+REPO_NAME=repo_name
 ```
 
-The bot reads the configuration file (`config.yaml`) to determine which actions to perform. By default it creates an issue titled “Automated Post”.
-
----
-
-## Configuration
-
-`config.yaml` example:
+Optionally, customize the trigger rules in `config.yaml`:
 
 ```yaml
-workflow:
-  steps:
-    - name: create_issue
-      type: github_issue
-      params:
-        title: "Automated Post"
-        body: "This issue was created by Ai_Post_bot."
-    - name: add_label
-      type: github_label
-      params:
-        issue_number: 1
-        label: "automation"
+triggers:
+  - type: new_issue
+    action: close
+    conditions:
+      - label: "wontfix"
 ```
-
-Feel free to extend the workflow with additional LangGraph nodes.
 
 ---
 
-## Contributing
+## Usage
+```bash
+# Run the bot
+python ai_post_bot.py
+```
 
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/your-feature`).
-3. Commit your changes (`git commit -m "Add your message"`).
-4. Push to your fork (`git push origin feature/your-feature`).
-5. Open a pull request.
-
-All contributions should follow the project's coding style and include tests.
+The bot will start listening for events defined in `config.yaml` and perform actions automatically. Logs are written to `logs/ai_post_bot.log`.
 
 ---
 
 ## License
-
 This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
