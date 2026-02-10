@@ -1,56 +1,29 @@
 # Ai_Post_bot
 
-Ai_Post_bot is an automated bot that uses the GitHub REST API to create, update, and manage repository posts. The bot leverages **LangGraph** for orchestrating complex conversational flows and decision logic, enabling intelligent content handling and streamlined workflow automation.
+**Ai_Post_bot** is an AI‑powered automation tool that uses LangGraph to orchestrate conversational logic and the GitHub REST API to automatically create, update, and manage posts (issues, comments, or releases) in GitHub repositories.
 
 ---
 
-## Table of Contents
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [License](#license)
+## Features
 
----
-
-## Overview
-Ai_Post_bot automates interactions with GitHub repositories through the REST API. It can:
-- Create new issue or pull request posts.
-- Edit existing posts based on predefined triggers.
-- Delete or close posts when conditions are met.
-- Log actions and responses for audit purposes.
-
-LangGraph powers the decision-making engine, allowing the bot to adapt its behavior based on contextual information and user input.
-
----
-
-## Key Features
-- **GitHub REST API Automation** – Direct integration with GitHub for full CRUD operations on posts.
-- **LangGraph Integration** – Structured workflow management and conversational logic.
-- **Configurable Triggers** – Set conditions for automated actions via a simple YAML file.
-- **Logging & Auditing** – Detailed logs of every API call and decision taken by the bot.
-- **Extensible Architecture** – Easily add new handlers or modify existing ones.
-
----
-
-## Prerequisites
-- Python 3.10 or newer
-- A GitHub personal access token with `repo` scope
-- `pip` package manager
+- **LangGraph integration** – Define complex AI workflows and state transitions with ease.
+- **GitHub REST API automation** – Programmatically create, edit, and close GitHub posts.
+- **Configurable prompts** – Tailor the AI output to match your repository’s style and guidelines.
+- **Secure authentication** – Uses a personal access token (PAT) stored in environment variables.
+- **Extensible architecture** – Add new actions or modify existing ones without touching core logic.
 
 ---
 
 ## Installation
+
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/Ai_Post_bot.git
+git clone https://github.com/<your-username>/Ai_Post_bot.git
 cd Ai_Post_bot
 
-# Create and activate a virtual environment
-python -m venv venv
-source venv/bin/activate   # On Windows use: venv\Scripts\activate
+# Create a virtual environment (recommended)
+python -m venv .venv
+source .venv/bin/activate   # On Windows use `.venv\Scripts\activate`
 
 # Install dependencies
 pip install -r requirements.txt
@@ -59,35 +32,44 @@ pip install -r requirements.txt
 ---
 
 ## Configuration
-Create a `.env` file in the project root with the following content:
+
+Create a `.env` file at the project root:
 
 ```
-GITHUB_TOKEN=your_github_token
-REPO_OWNER=repo_owner_username
-REPO_NAME=repo_name
+GITHUB_TOKEN=ghp_XXXXXXXXXXXXXXXXXXXX
+REPO_OWNER=your-username
+REPO_NAME=your-repo
 ```
 
-Optionally, customize the trigger rules in `config.yaml`:
-
-```yaml
-triggers:
-  - type: new_issue
-    action: close
-    conditions:
-      - label: "wontfix"
-```
+`GITHUB_TOKEN` must have `repo` scope for full access.
 
 ---
 
 ## Usage
+
 ```bash
-# Run the bot
-python ai_post_bot.py
+# Run the bot with a predefined prompt
+python ai_post_bot.py --prompt "Draft a release note for version 2.0"
 ```
 
-The bot will start listening for events defined in `config.yaml` and perform actions automatically. Logs are written to `logs/ai_post_bot.log`.
+The script will:
+
+1. Use LangGraph to process the prompt and generate content.
+2. Call the GitHub REST API to create a new issue or comment with the generated text.
+3. Log the result to the console.
+
+For advanced usage, edit the `config.yaml` file to customize the workflow or add new actions.
+
+---
+
+## Contributing
+
+Pull requests are welcome. Please open an issue first to discuss major changes. Follow the existing coding style and include tests for new features.
 
 ---
 
 ## License
-This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
+
+MIT © 2026
+
+---
